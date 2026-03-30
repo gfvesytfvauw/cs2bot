@@ -34,20 +34,25 @@ class CSFloat:
                     text = await r.text()
                     log(f"⚠️  CSFloat {r.status}: {text[:200]}")
                     return []
-                try:
-                    data = await r.json(content_type=None)
-                    listings = data.get("data", [])
-                    # Filter float and price manually
-                    results = []
-                    for l in listings:
-                        fv = l["item"].get("float_value", 0)
-                        price = l["price"] / 100
-                        if min_float <= fv <= max_float and min_price <= price <= max_price:
-                            results.append(self._normalize(l))
-                    return results
-                except Exception as e:
-                    log(f"⚠️  CSFloat parse error: {e}")
-                    return []
+               try:
+    data = await r.json(content_type=None)
+    listings = data.get("data", [])
+    log(f"🔍 CSFloat raw: {len(listings)} listings before filter")
+    if listings:
+        first = listings[0]
+        fv = first["item"].get("float_value", 0)
+        price = first["price"] / 100
+        log(f"🔍 First listing: float={fv:.6f} price=${price:.2f}")
+    results = []
+    for l in listings:
+        fv = l["item"].get("float_value", 0)
+        price = l["price"] / 100
+        if min_float <= fv <= max_float and min_price <= price <= max_price:
+            results.append(self._normalize(l))
+    return results
+except Exception as e:
+    log(f"⚠️  CSFloat parse error: {e}")
+    return []
         except Exception as e:
             log(f"CSFloat error: {e}")
             return []
