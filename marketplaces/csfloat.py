@@ -52,32 +52,32 @@ class CSFloat:
             log(f"CSFloat error: {e}")
             return []
 
-   async def buy(self, session, listing):
-    raw_id = listing["raw_id"]
-    try:
-        async with session.post(
-            f"{self.BASE}/listings/{raw_id}/buy",
-            headers=self.headers,
-            json={"price": listing["raw_price"]},
-            timeout=aiohttp.ClientTimeout(total=15)
-        ) as r:
-            try:
-                result = await r.json(content_type=None)
-            except Exception:
-                result = {"status": r.status}
-            return r.status == 200, result
-    except Exception as e:
-        return False, {"error": str(e)}
+ def _normalize(self, listing):
+        return {
+            "id": f"csf_{listing['id']}",
+            "raw_id": listing["id"],
+            "market": self.NAME,
+            "name": listing["item"].get("market_hash_name", ""),
+            "float": listing["item"].get("float_value", 0),
+            "price_usd": listing["price"] / 100,
+            "raw_price": listing["price"],
+            "inspect_url": listing["item"].get("inspect_link"),
+            "wear": listing["item"].get("wear_name", ""),
+        }
 
-   def _normalize(self, listing):
-    return {
-        "id": f"csf_{listing['id']}",
-        "raw_id": listing["id"],  # ← keep original ID
-        "market": self.NAME,
-        "name": listing["item"].get("market_hash_name", ""),
-        "float": listing["item"].get("float_value", 0),
-        "price_usd": listing["price"] / 100,
-        "raw_price": listing["price"],
-        "inspect_url": listing["item"].get("inspect_link"),
-        "wear": listing["item"].get("wear_name", ""),
-    }
+    async def buy(self, session, listing):
+        raw_id = listing["raw_id"]
+        try:
+            async with session.post(
+                f"{self.BASE}/listings/{raw_id}/buy",
+                headers=self.headers,
+                json={"price": listing["raw_price"]},
+                timeout=aiohttp.ClientTimeout(total=15)
+            ) as r:
+                try:
+                    result = await r.json(content_type=None)
+                except Exception:
+                    result = {"status": r.status}
+                return r.status == 200, result
+        except Exception as e:
+            return False, {"error": str(e)}
