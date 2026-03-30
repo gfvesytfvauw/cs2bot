@@ -13,13 +13,14 @@ class CSFloat:
         }
 
     async def get_listings(self, session, name, max_float=1.0, min_float=0.0, max_price=99999, min_price=0.0):
-        params = {
-            "market_hash_name": name,
-            "sort_by": "lowest_price",
-            "limit": 50,
-            "type": "buy_now",
-        }
-
+params = {
+    "market_hash_name": name,
+    "sort_by": "lowest_price",
+    "limit": 100,
+    "type": "buy_now",
+    "max_float": max_float,
+    "min_float": min_float,
+}
         try:
             async with session.get(
                 f"{self.BASE}/listings",
