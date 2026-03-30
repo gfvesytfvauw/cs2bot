@@ -80,10 +80,9 @@ class CSFloat:
                 json={"price": listing["raw_price"]},
                 timeout=aiohttp.ClientTimeout(total=15)
             ) as r:
-                try:
-                    result = await r.json(content_type=None)
-                except Exception:
-                    result = {"status": r.status}
-                return r.status == 200, result
-        except Exception as e:
-            return False, {"error": str(e)}
+              try:
+    result = await r.json(content_type=None)
+except Exception:
+    result = {"status": r.status}
+log(f"🔍 Buy response {r.status}: {result}")
+return r.status == 200, result
