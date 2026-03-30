@@ -6,13 +6,13 @@
   },
 
   "poll_interval": 20,
-  "max_spend_per_session": 2,
+  "max_spend_per_session": 5,
 
   "watchlist": [
 {
-  "name": "MP7 | Akoben (Well-Worn)",
-  "max_float": 0.6,
-  "max_price": 1
+  "name": "Glock-18 | High Beam (Factory New)",
+  "max_float": 0.0001,
+  "max_price": 4
 }
   ]
 }
