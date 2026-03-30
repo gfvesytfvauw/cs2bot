@@ -13,14 +13,15 @@ class CSFloat:
         }
 
     async def get_listings(self, session, name, max_float=1.0, min_float=0.0, max_price=99999, min_price=0.0):
-params = {
-    "market_hash_name": name,
-    "sort_by": "lowest_price",
-    "limit": 100,
-    "type": "buy_now",
-    "max_float": max_float,
-    "min_float": min_float,
-}
+        params = {
+            "market_hash_name": name,
+            "sort_by": "lowest_price",
+            "limit": 100,
+            "type": "buy_now",
+            "max_float": max_float,
+            "min_float": min_float,
+        }
+
         try:
             async with session.get(
                 f"{self.BASE}/listings",
@@ -40,9 +41,8 @@ params = {
                     listings = data.get("data", [])
                     log(f"🔍 CSFloat raw: {len(listings)} listings before filter")
                     if listings:
-                        first = listings[0]
-                        fv = first["item"].get("float_value", 0)
-                        price = first["price"] / 100
+                        fv = listings[0]["item"].get("float_value", 0)
+                        price = listings[0]["price"] / 100
                         log(f"🔍 First listing: float={fv:.6f} price=${price:.2f}")
                     results = []
                     for l in listings:
