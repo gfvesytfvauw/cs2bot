@@ -16,7 +16,7 @@ class CSFloat:
         params = {
             "market_hash_name": name,
             "sort_by": "lowest_price",
-            "limit": 100,
+            "limit": 50,
             "type": "buy_now",
         }
 
