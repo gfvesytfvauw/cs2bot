@@ -6,14 +6,13 @@
   },
 
   "poll_interval": 20,
-  "max_spend_per_session": 2,
+  "max_spend_per_session": 2.00,
 
   "watchlist": [
     {
       "name": "MP7 | Akoben",
-      "max_float": 0.8,
-      "max_price": 1,
-      "note": "Low float FT for trade-up"
-    }    
+      "max_float": 0.5,
+      "max_price": 1
+    }
   ]
 }
