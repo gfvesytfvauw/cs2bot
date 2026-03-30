@@ -6,13 +6,13 @@
   },
 
   "poll_interval": 20,
-  "max_spend_per_session": 5,
+  "max_spend_per_session": 6,
 
   "watchlist": [
 {
   "name": "Glock-18 | High Beam (Factory New)",
   "max_float": 0.0001,
-  "max_price": 4
+  "max_price": 5
 }
   ]
 }
