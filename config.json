@@ -6,13 +6,13 @@
   },
 
   "poll_interval": 20,
-  "max_spend_per_session": 2.00,
+  "max_spend_per_session": 15,
 
   "watchlist": [
-    {
-      "name": "MP7 | Akoben (Well-Worn)",
-      "max_float": 0.5,
-      "max_price": 1
-    }
+{
+  "name": "Glock-18 | Water Elemental (Minimal Wear)",
+  "max_float": 0.1,
+  "max_price": 15
+}
   ]
 }
