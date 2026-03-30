@@ -70,20 +70,23 @@ class CSFloat:
             "wear": listing["item"].get("wear_name", ""),
         }
 
-    async def buy(self, session, listing):
-        raw_id = listing["raw_id"]
-        try:
-            async with session.post(
-                f"{self.BASE}/listings/{raw_id}/buy",
-                headers=self.headers,
-                json={"price": listing["raw_price"]},
-                timeout=aiohttp.ClientTimeout(total=15)
-            ) as r:
-                try:
-                    result = await r.json(content_type=None)
-                except Exception:
-                    result = {"status": r.status}
-                log(f"🔍 Buy response {r.status}: {result}")
-                return r.status == 200, result
-        except Exception as e:
-            return False, {"error": str(e)}
+async def buy(self, session, listing):
+    try:
+        async with session.post(
+            f"{self.BASE}/buy-orders",
+            headers=self.headers,
+            json={
+                "market_hash_name": listing["name"],
+                "max_price": listing["raw_price"],
+                "quantity": 1
+            },
+            timeout=aiohttp.ClientTimeout(total=15)
+        ) as r:
+            try:
+                result = await r.json(content_type=None)
+            except Exception:
+                result = {"status": r.status}
+            log(f"🔍 Buy response {r.status}: {result}")
+            return r.status == 200, result
+    except Exception as e:
+        return False, {"error": str(e)}
