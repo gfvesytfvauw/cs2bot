@@ -52,22 +52,22 @@ class CSFloat:
             log(f"CSFloat error: {e}")
             return []
 
-    async def buy(self, session, listing):
-        raw_id = listing["id"].replace("csf_", "")
-        try:
-            async with session.post(
-                f"{self.BASE}/listings/{raw_id}/buy",
-                headers=self.headers,
-                json={"price": listing["raw_price"]},
-                timeout=aiohttp.ClientTimeout(total=15)
-            ) as r:
-                try:
-                    result = await r.json(content_type=None)
-                except Exception:
-                    result = {"status": r.status}
-                return r.status == 200, result
-        except Exception as e:
-            return False, {"error": str(e)}
+   async def buy(self, session, listing):
+    raw_id = listing["raw_id"]
+    try:
+        async with session.post(
+            f"{self.BASE}/listings/{raw_id}/buy",
+            headers=self.headers,
+            json={"price": listing["raw_price"]},
+            timeout=aiohttp.ClientTimeout(total=15)
+        ) as r:
+            try:
+                result = await r.json(content_type=None)
+            except Exception:
+                result = {"status": r.status}
+            return r.status == 200, result
+    except Exception as e:
+        return False, {"error": str(e)}
 
     def _normalize(self, listing):
         return {
