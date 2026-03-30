@@ -1,7 +1,3 @@
-"""
-CSFloat marketplace module.
-"""
-
 import aiohttp
 from utils import log
 
@@ -19,16 +15,10 @@ class CSFloat:
     async def get_listings(self, session, name, max_float=1.0, min_float=0.0, max_price=99999, min_price=0.0):
         params = {
             "market_hash_name": name,
-            "sort_by": "price",
-            "order": "asc",
-            "max_float": max_float,
-            "min_float": min_float,
-            "max_price": int(max_price * 100),
+            "sort_by": "lowest_price",
             "limit": 10,
             "type": "buy_now",
         }
-        if min_price > 0:
-            params["min_price"] = int(min_price * 100)
 
         try:
             async with session.get(
@@ -41,22 +31,32 @@ class CSFloat:
                     log("⚠️  CSFloat rate limited")
                     return []
                 if r.status != 200:
-                    log(f"⚠️  CSFloat returned status {r.status}")
+                    text = await r.text()
+                    log(f"⚠️  CSFloat {r.status}: {text[:200]}")
                     return []
                 try:
                     data = await r.json(content_type=None)
-                    return [self._normalize(l) for l in data.get("data", [])]
+                    listings = data.get("data", [])
+                    # Filter float and price manually
+                    results = []
+                    for l in listings:
+                        fv = l["item"].get("float_value", 0)
+                        price = l["price"] / 100
+                        if min_float <= fv <= max_float and min_price <= price <= max_price:
+                            results.append(self._normalize(l))
+                    return results
                 except Exception as e:
-                    log(f"⚠️  CSFloat JSON parse error: {e}")
+                    log(f"⚠️  CSFloat parse error: {e}")
                     return []
         except Exception as e:
-            log(f"CSFloat fetch error: {e}")
+            log(f"CSFloat error: {e}")
             return []
 
     async def buy(self, session, listing):
+        raw_id = listing["id"].replace("csf_", "")
         try:
             async with session.post(
-                f"{self.BASE}/listings/{listing['id'].replace('csf_', '')}/buy",
+                f"{self.BASE}/listings/{raw_id}/buy",
                 headers=self.headers,
                 json={"price": listing["raw_price"]},
                 timeout=aiohttp.ClientTimeout(total=15)
