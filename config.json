@@ -11,8 +11,9 @@
   "watchlist": [
 {
   "name": "Glock-18 | High Beam (Factory New)",
+  "min_float": 0.001,
   "max_float": 0.0001,
-  "max_price": 5
+  "max_price": 4.00
 }
   ]
 }
