@@ -15,8 +15,8 @@ class CSFloat:
     async def get_listings(self, session, name, max_float=1.0, min_float=0.0, max_price=99999, min_price=0.0):
         params = {
             "market_hash_name": name,
-            "sort_by": "lowest_float",
-            "limit": 10,
+            "sort_by": "lowest_price",
+            "limit": 250,
             "type": "buy_now",
         }
 
