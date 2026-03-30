@@ -69,14 +69,15 @@ class CSFloat:
     except Exception as e:
         return False, {"error": str(e)}
 
-    def _normalize(self, listing):
-        return {
-            "id": f"csf_{listing['id']}",
-            "market": self.NAME,
-            "name": listing["item"].get("market_hash_name", ""),
-            "float": listing["item"].get("float_value", 0),
-            "price_usd": listing["price"] / 100,
-            "raw_price": listing["price"],
-            "inspect_url": listing["item"].get("inspect_link"),
-            "wear": listing["item"].get("wear_name", ""),
-        }
+   def _normalize(self, listing):
+    return {
+        "id": f"csf_{listing['id']}",
+        "raw_id": listing["id"],  # ← keep original ID
+        "market": self.NAME,
+        "name": listing["item"].get("market_hash_name", ""),
+        "float": listing["item"].get("float_value", 0),
+        "price_usd": listing["price"] / 100,
+        "raw_price": listing["price"],
+        "inspect_url": listing["item"].get("inspect_link"),
+        "wear": listing["item"].get("wear_name", ""),
+    }
