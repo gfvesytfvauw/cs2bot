@@ -1,0 +1,19 @@
+{
+  "discord_webhook": "https://discord.com/api/webhooks/1488237986356265111/dUDtoccqDVNQYNRuaPfV3JvZ72vGjvfrgQotJjqFYsEQBCCBx3r6LzbCTBkLLqq2v0XC",
+
+  "api_keys": {
+    "csfloat": "tmBmH0PdtuFqnNWbr6yrLcPJ01dXeHpn",
+  },
+
+  "poll_interval": 20,
+  "max_spend_per_session": 2,
+
+  "watchlist": [
+    {
+      "name": "MP7 | Akoben",
+      "max_float": 0.8,
+      "max_price": 1,
+      "note": "Low float FT for trade-up"
+    }    
+  ]
+}
