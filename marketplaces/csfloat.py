@@ -37,7 +37,12 @@ class CSFloat:
                 try:
                     data = await r.json(content_type=None)
                     listings = data.get("data", [])
-                    # Filter float and price manually
+                    log(f"🔍 CSFloat raw: {len(listings)} listings before filter")
+                    if listings:
+                        first = listings[0]
+                        fv = first["item"].get("float_value", 0)
+                        price = first["price"] / 100
+                        log(f"🔍 First listing: float={fv:.6f} price=${price:.2f}")
                     results = []
                     for l in listings:
                         fv = l["item"].get("float_value", 0)
@@ -52,7 +57,7 @@ class CSFloat:
             log(f"CSFloat error: {e}")
             return []
 
- def _normalize(self, listing):
+    def _normalize(self, listing):
         return {
             "id": f"csf_{listing['id']}",
             "raw_id": listing["id"],
