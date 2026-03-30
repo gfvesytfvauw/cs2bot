@@ -16,12 +16,11 @@ class CSFloat:
         params = {
             "market_hash_name": name,
             "sort_by": "lowest_price",
-            "limit": 50,
+            "limit": 100,
             "type": "buy_now",
             "max_float": max_float,
             "min_float": min_float,
         }
-
         try:
             async with session.get(
                 f"{self.BASE}/listings",
@@ -80,9 +79,11 @@ class CSFloat:
                 json={"price": listing["raw_price"]},
                 timeout=aiohttp.ClientTimeout(total=15)
             ) as r:
-              try:
-    result = await r.json(content_type=None)
-except Exception:
-    result = {"status": r.status}
-log(f"🔍 Buy response {r.status}: {result}")
-return r.status == 200, result
+                try:
+                    result = await r.json(content_type=None)
+                except Exception:
+                    result = {"status": r.status}
+                log(f"🔍 Buy response {r.status}: {result}")
+                return r.status == 200, result
+        except Exception as e:
+            return False, {"error": str(e)}
